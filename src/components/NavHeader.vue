@@ -14,7 +14,18 @@
           {{ item.label }}
         </a>
       </nav>
-      <button class="print-btn no-print" @click="handlePrint">导出 PDF</button>
+      <div class="nav-actions no-print">
+        <a
+          v-for="link in profile.links"
+          :key="link.label"
+          :href="link.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="nav-social-link"
+        >
+          {{ link.label }}
+        </a>
+      </div>
     </div>
   </header>
 </template>
@@ -39,10 +50,6 @@ function handleScroll() {
       break
     }
   }
-}
-
-function handlePrint() {
-  window.print()
 }
 
 onMounted(() => {
@@ -111,22 +118,27 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.06);
 }
 
-.print-btn {
-  padding: 8px 18px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: white;
-  background: var(--gradient);
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: opacity 0.2s, transform 0.2s;
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.print-btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
+.nav-social-link {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.nav-social-link:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(99, 102, 241, 0.3);
 }
 
 @media (max-width: 768px) {

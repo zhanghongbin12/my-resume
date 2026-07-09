@@ -3,14 +3,14 @@ export const profile = {
   nameEn: 'Zhang Hongbin',
   title: '前端开发工程师',
   tagline: '用代码构建体验，用技术驱动业务',
-  avatar: null,
+  avatar: '/head.jpg',
   location: '北京',
-  email: 'wb_zhanghongbin@meituan.com',
-  phone: '138****8888',
-  github: 'https://github.com/wb_zhanghongbin',
+  email: '1451572010@qq.com',
+  phone: '13611261544',
+  github: 'https://github.com/zhanghongbin12',
   links: [
-    { label: 'GitHub', url: 'https://github.com/wb_zhanghongbin', icon: 'github' },
-    { label: '掘金', url: 'https://juejin.cn', icon: 'juejin' },
+    { label: 'GitHub', url: 'https://github.com/zhanghongbin12', icon: 'github' },
+    { label: '掘金', url: 'https://juejin.cn/user/342703359405374/posts', icon: 'juejin' },
   ],
   summary:
     '10 年前端开发经验，深耕 Web 前端工程化与可视化领域。擅长 Vue / React 技术栈，具备复杂业务系统架构与性能优化能力。注重代码质量与用户体验，善于跨团队协作推动项目落地。追求技术深度与业务价值的平衡，期待在更具挑战性的场景中创造更大价值。',
@@ -127,10 +127,9 @@ export const education = [
 
 export const navItems = [
   { id: 'hero', label: '首页' },
-  { id: 'about', label: '关于' },
-  { id: 'skills', label: '技能' },
   { id: 'experience', label: '经历' },
   { id: 'projects', label: '项目' },
-  { id: 'education', label: '教育' },
+  { id: 'skills', label: '技能' },
+  { id: 'about', label: '关于' },
   { id: 'contact', label: '联系' },
 ]

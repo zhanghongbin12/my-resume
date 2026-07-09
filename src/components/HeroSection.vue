@@ -7,9 +7,13 @@
     </div>
 
     <div class="hero-inner">
+      <div v-if="profile.avatar" class="hero-avatar-wrap fade-in" ref="avatarEl">
+        <img :src="profile.avatar" :alt="profile.name" class="hero-avatar" />
+      </div>
+
       <div class="hero-badge fade-in" ref="el0">
         <span class="badge-dot"></span>
-        开放新的职业机会
+        期待加入优秀团队
       </div>
 
       <h1 class="hero-name fade-in" ref="el1">
@@ -45,11 +49,13 @@
 import { ref, onMounted } from 'vue'
 import { profile } from '../data/resume.js'
 
+const avatarEl = ref(null)
 const refs = [ref(null), ref(null), ref(null), ref(null), ref(null), ref(null), ref(null)]
 const [el0, el1, el2, el3, el4, el5, el6] = refs
 
 onMounted(() => {
-  refs.forEach((r, i) => {
+  const fadeRefs = profile.avatar ? [avatarEl, ...refs] : refs
+  fadeRefs.forEach((r, i) => {
     setTimeout(() => r.value?.classList.add('visible'), 100 + i * 120)
   })
 })
@@ -117,6 +123,25 @@ onMounted(() => {
   width: 100%;
   position: relative;
   z-index: 1;
+}
+
+.hero-avatar-wrap {
+  width: 124px;
+  height: 124px;
+  padding: 3px;
+  border-radius: 50%;
+  background: var(--gradient);
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px var(--accent-glow);
+}
+
+.hero-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: contain;
+  display: block;
+  background: #dfe6ed;
 }
 
 .hero-badge {

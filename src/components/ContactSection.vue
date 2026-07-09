@@ -17,32 +17,12 @@
               <span class="contact-value">{{ profile.email }}</span>
             </div>
           </a>
-          <div class="contact-item">
+          <a :href="`tel:${profile.phone}`" class="contact-item">
             <span class="contact-icon">📱</span>
             <div>
               <span class="contact-label">电话</span>
               <span class="contact-value">{{ profile.phone }}</span>
             </div>
-          </div>
-          <div class="contact-item">
-            <span class="contact-icon">📍</span>
-            <div>
-              <span class="contact-label">所在地</span>
-              <span class="contact-value">{{ profile.location }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="contact-links no-print">
-          <a
-            v-for="link in profile.links"
-            :key="link.label"
-            :href="link.url"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="social-link"
-          >
-            {{ link.label }}
           </a>
         </div>
       </div>
@@ -87,7 +67,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  margin-bottom: 32px;
   text-align: left;
 }
 
@@ -128,27 +107,6 @@ a.contact-item:hover {
 .contact-value {
   font-size: 0.95rem;
   font-weight: 500;
-}
-
-.contact-links {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-}
-
-.social-link {
-  padding: 10px 24px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border);
-  transition: background 0.2s, border-color 0.2s;
-}
-
-.social-link:hover {
-  background: rgba(99, 102, 241, 0.15);
-  border-color: rgba(99, 102, 241, 0.3);
 }
 
 .footer {

@@ -2,11 +2,10 @@
   <NavHeader />
   <main>
     <HeroSection />
-    <AboutSection />
-    <SkillsSection />
     <ExperienceSection />
     <ProjectsSection />
-    <EducationSection />
+    <SkillsSection />
+    <AboutSection />
     <ContactSection />
   </main>
 </template>
@@ -18,6 +17,5 @@ import AboutSection from './components/AboutSection.vue'
 import SkillsSection from './components/SkillsSection.vue'
 import ExperienceSection from './components/ExperienceSection.vue'
 import ProjectsSection from './components/ProjectsSection.vue'
-import EducationSection from './components/EducationSection.vue'
 import ContactSection from './components/ContactSection.vue'
 </script>
