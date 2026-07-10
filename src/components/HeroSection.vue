@@ -24,18 +24,12 @@
       <p class="hero-title fade-in" ref="el2">{{ profile.title }}</p>
       <p class="hero-tagline fade-in" ref="el3">{{ profile.tagline }}</p>
 
-      <div class="hero-meta fade-in" ref="el4">
-        <span>{{ profile.location }}</span>
-        <span class="dot">·</span>
-        <a :href="`mailto:${profile.email}`">{{ profile.email }}</a>
-      </div>
-
-      <div class="hero-actions fade-in no-print" ref="el5">
+      <div class="hero-actions fade-in no-print" ref="el4">
         <a href="#contact" class="btn-primary">联系我</a>
         <a href="#experience" class="btn-secondary">查看经历</a>
       </div>
 
-      <div class="hero-stats fade-in" ref="el6">
+      <div class="hero-stats fade-in" ref="el5">
         <div v-for="item in profile.highlights" :key="item.label" class="stat">
           <span class="stat-value">{{ item.value }}</span>
           <span class="stat-label">{{ item.label }}</span>
@@ -50,8 +44,8 @@ import { ref, onMounted } from 'vue'
 import { profile } from '../data/resume.js'
 
 const avatarEl = ref(null)
-const refs = [ref(null), ref(null), ref(null), ref(null), ref(null), ref(null), ref(null)]
-const [el0, el1, el2, el3, el4, el5, el6] = refs
+const refs = [ref(null), ref(null), ref(null), ref(null), ref(null), ref(null)]
+const [el0, el1, el2, el3, el4, el5] = refs
 
 onMounted(() => {
   const fadeRefs = profile.avatar ? [avatarEl, ...refs] : refs
@@ -202,17 +196,7 @@ onMounted(() => {
   font-size: 1.05rem;
   color: var(--text-secondary);
   max-width: 520px;
-  margin-bottom: 20px;
-}
-
-.hero-meta {
-  font-size: 0.9rem;
-  color: var(--text-muted);
   margin-bottom: 32px;
-}
-
-.hero-meta .dot {
-  margin: 0 8px;
 }
 
 .hero-actions {
@@ -256,7 +240,7 @@ onMounted(() => {
 
 .hero-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   max-width: 560px;
 }

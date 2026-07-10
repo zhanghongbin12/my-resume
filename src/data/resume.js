@@ -12,8 +12,12 @@ export const profile = {
     { label: 'GitHub', url: 'https://github.com/zhanghongbin12', icon: 'github' },
     { label: '掘金', url: 'https://juejin.cn/user/342703359405374/posts', icon: 'juejin' },
   ],
-  summary:
-    '10 年前端开发经验，深耕 Web 前端工程化与可视化领域。擅长 Vue / React 技术栈，具备复杂业务系统架构与性能优化能力。注重代码质量与用户体验，善于跨团队协作推动项目落地。追求技术深度与业务价值的平衡，期待在更具挑战性的场景中创造更大价值。',
+  quote: '追求技术深度与业务价值的平衡',
+  aboutParagraphs: [
+    '10 年前端开发经验，深耕 Web 前端工程化与可视化领域。擅长 Vue / React 技术栈，具备复杂业务系统架构与性能优化能力。',
+    '注重代码质量与用户体验，善于跨团队协作推动项目落地。',
+    '期待在更具挑战性的场景中创造更大价值，与团队一起构建有影响力的产品。',
+  ],
   highlights: [
     { value: '10+', label: '年前端经验' },
     { value: '20+', label: '核心项目' },
