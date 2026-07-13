@@ -3,7 +3,7 @@ export const profile = {
   nameEn: 'Zhang Hongbin',
   title: '前端开发工程师',
   tagline: '用代码构建体验，用技术驱动业务',
-  avatar: '/head.jpg',
+  avatar: true,
   location: '北京',
   email: '1451572010@qq.com',
   phone: '13611261544',

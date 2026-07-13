@@ -8,7 +8,7 @@
 
     <div class="hero-inner">
       <div v-if="profile.avatar" class="hero-avatar-wrap fade-in" ref="avatarEl">
-        <img :src="profile.avatar" :alt="profile.name" class="hero-avatar" />
+        <img src="/head.jpg" :alt="profile.name" class="hero-avatar" />
       </div>
 
       <div class="hero-badge fade-in" ref="el0">
