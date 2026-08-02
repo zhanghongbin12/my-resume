@@ -20,7 +20,7 @@
               </div>
               <div class="exp-meta">
                 <span class="exp-period">{{ exp.period }}</span>
-                <span class="exp-location">{{ exp.location }}</span>
+                <span v-if="exp.location" class="exp-location">{{ exp.location }}</span>
               </div>
             </div>
             <p class="exp-desc">{{ exp.description }}</p>

@@ -13,13 +13,8 @@
         >
           <h3 class="group-title">{{ group.category }}</h3>
           <div v-for="item in group.items" :key="item.name" class="skill-item">
-            <div class="skill-header">
-              <span>{{ item.name }}</span>
-              <span class="skill-level">{{ item.level }}%</span>
-            </div>
-            <div class="skill-bar">
-              <div class="skill-fill" :style="{ width: item.level + '%' }"></div>
-            </div>
+            <span class="skill-name">{{ item.name }}</span>
+            <span v-if="item.detail" class="skill-detail">{{ item.detail }}</span>
           </div>
         </div>
       </div>
@@ -58,37 +53,26 @@ onMounted(() => {
 }
 
 .skill-item {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .skill-item:last-child {
   margin-bottom: 0;
 }
 
-.skill-header {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-bottom: 8px;
+.skill-name {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
 }
 
-.skill-level {
-  color: var(--text-muted);
+.skill-detail {
+  display: block;
+  margin-top: 6px;
   font-size: 0.8rem;
-}
-
-.skill-bar {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.skill-fill {
-  height: 100%;
-  background: var(--gradient);
-  border-radius: 999px;
-  transition: width 1s ease;
+  line-height: 1.55;
+  color: var(--text-muted);
 }
 
 @media (max-width: 900px) {

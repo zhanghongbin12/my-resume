@@ -287,14 +287,16 @@ onUnmounted(() => {
   .mobile-menu {
     display: flex;
     flex-direction: column;
-    position: fixed;
-    top: var(--nav-height);
+    position: absolute;
+    top: 100%;
     left: 0;
     right: 0;
-    bottom: 0;
+    height: calc(100vh - var(--nav-height));
+    height: calc(100dvh - var(--nav-height));
     padding: 24px;
-    background: rgba(10, 10, 15, 0.96);
-    backdrop-filter: blur(16px);
+    background: var(--bg-primary);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
