@@ -12,13 +12,15 @@
   <img
     v-else-if="icon === 'juejin'"
     class="social-icon juejin"
-    src="/juejin.png"
+    :src="juejinIconSrc"
     alt=""
     aria-hidden="true"
   />
 </template>
 
 <script setup>
+const juejinIconSrc = `${import.meta.env.BASE_URL}juejin.png`
+
 defineProps({
   icon: {
     type: String,

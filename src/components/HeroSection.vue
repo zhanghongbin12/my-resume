@@ -8,7 +8,7 @@
 
     <div class="hero-inner">
       <div v-if="profile.avatar" class="hero-avatar-wrap fade-in" ref="avatarEl">
-        <img src="/head.jpg" :alt="profile.name" class="hero-avatar" />
+        <img :src="avatarSrc" :alt="profile.name" class="hero-avatar" />
       </div>
 
       <div class="hero-badge fade-in" ref="el0">
@@ -43,6 +43,7 @@
 import { ref, onMounted } from 'vue'
 import { profile } from '../data/resume.js'
 
+const avatarSrc = `${import.meta.env.BASE_URL}head.jpg`
 const avatarEl = ref(null)
 const refs = [ref(null), ref(null), ref(null), ref(null), ref(null), ref(null)]
 const [el0, el1, el2, el3, el4, el5] = refs

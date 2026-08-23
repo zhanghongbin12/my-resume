@@ -1,3 +1,5 @@
+const publicAsset = (filename) => `${import.meta.env.BASE_URL}${filename}`
+
 export const profile = {
   name: '张宏斌',
   nameEn: 'Zhang Hongbin',
@@ -166,19 +168,19 @@ export const openSourceProjects = [
   {
     name: 'AI 智能助手',
     preview: 'https://zhanghongbin12.github.io/llm-assistant/',
-    image: '/llm-assistant.jpg',
+    image: publicAsset('llm-assistant.jpg'),
     description: '聚焦多轮对话与流式响应，整合会话上下文管理与模型路由能力，覆盖从提示词工程到交互体验的完整前端落地链路。',
   },
   {
     name: '网页小游戏',
     preview: 'https://zhanghongbin12.github.io/saoleigame/dist/',
-    image: '/saoleigame.png',
+    image: publicAsset('saoleigame.png'),
     description: 'AI 协作完成的扫雷小游戏，从需求拆解、交互设计、状态机实现到一键部署上线，沉淀 AI 辅助前端工程的全链路实践。',
   },
   {
     name: 'Three.js 3D 作品',
     preview: 'https://zhanghongbin12.github.io/my-three/',
-    image: '/my-three.jpg',
+    image: publicAsset('my-three.jpg'),
     description: 'Three.js 高保真 3D 作品集，融合纹理映射、大气辉光与 OrbitControls 轨道控制，呈现沉浸式行星场景与实时交互。',
   },
 ]
