@@ -4,6 +4,7 @@
     <HeroSection />
     <ExperienceSection />
     <ProjectsSection />
+    <OpenSourceSection />
     <SkillsSection />
     <AboutSection />
     <ContactSection />
@@ -17,5 +18,6 @@ import AboutSection from './components/AboutSection.vue'
 import SkillsSection from './components/SkillsSection.vue'
 import ExperienceSection from './components/ExperienceSection.vue'
 import ProjectsSection from './components/ProjectsSection.vue'
+import OpenSourceSection from './components/OpenSourceSection.vue'
 import ContactSection from './components/ContactSection.vue'
 </script>
