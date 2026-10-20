@@ -1,368 +1,248 @@
 <template>
-  <header class="nav" :class="{ scrolled: isScrolled }">
+  <header class="nav no-print">
     <div class="nav-inner">
-      <a href="#hero" class="nav-logo" @click="closeMenu">{{ profile.name }}</a>
-
-      <nav class="nav-links no-print">
+      <a href="#hero" class="nav-logo" @click="closeMenu"
+        >{{ profile.name }}<span>前端开发</span></a
+      >
+      <nav class="nav-links" aria-label="主导航">
         <a
           v-for="item in navItems"
           :key="item.id"
           :href="`#${item.id}`"
-          class="nav-link"
-          :class="{ active: activeSection === item.id }"
-          @click="activeSection = item.id"
+          :aria-current="activeSection === item.id ? 'location' : undefined"
+          >{{ item.label }}</a
         >
-          {{ item.label }}
-        </a>
       </nav>
-
-      <div class="nav-actions no-print">
+      <div class="nav-socials">
         <a
           v-for="link in profile.links"
           :key="link.label"
           :href="link.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="nav-social-link"
-          :class="link.icon"
+          ><SocialIcon :icon="link.icon" />{{ link.label }}</a
         >
-          <SocialIcon :icon="link.icon" />
-          {{ link.label }}
-        </a>
       </div>
-
       <button
-        class="menu-toggle no-print"
-        :class="{ open: isMenuOpen }"
+        class="menu-toggle"
         :aria-expanded="isMenuOpen"
-        aria-label="打开导航菜单"
-        @click="toggleMenu"
+        aria-controls="mobile-menu"
+        :aria-label="isMenuOpen ? '关闭导航菜单' : '打开导航菜单'"
+        @click="isMenuOpen = !isMenuOpen"
       >
-        <span class="menu-bar"></span>
-        <span class="menu-bar"></span>
-        <span class="menu-bar"></span>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.7"
+          stroke-linecap="round"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <path v-if="isMenuOpen" d="m6 6 12 12M6 18 18 6" />
+          <path v-else d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
       </button>
     </div>
-
-    <div
-      class="mobile-menu no-print"
-      :class="{ open: isMenuOpen }"
-      @click.self="closeMenu"
+    <nav
+      v-if="isMenuOpen"
+      id="mobile-menu"
+      class="mobile-menu"
+      aria-label="移动端导航"
     >
-      <nav class="mobile-nav">
-        <a
-          v-for="item in navItems"
-          :key="item.id"
-          :href="`#${item.id}`"
-          class="mobile-nav-link"
-          :class="{ active: activeSection === item.id }"
-          @click="handleNavClick(item.id)"
-        >
-          {{ item.label }}
-        </a>
-      </nav>
-
-      <div class="mobile-actions">
+      <a
+        v-for="item in navItems"
+        :key="item.id"
+        :href="`#${item.id}`"
+        :aria-current="activeSection === item.id ? 'location' : undefined"
+        @click="closeMenu"
+        >{{ item.label }}</a
+      >
+      <div class="mobile-socials">
         <a
           v-for="link in profile.links"
           :key="link.label"
           :href="link.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="mobile-social-link"
-          :class="link.icon"
           @click="closeMenu"
+          >{{ link.label }}</a
         >
-          <SocialIcon :icon="link.icon" />
-          {{ link.label }}
-        </a>
       </div>
-    </div>
+    </nav>
   </header>
 </template>
-
 <script setup>
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { profile, navItems } from '../data/resume.js'
 import SocialIcon from './SocialIcon.vue'
-
-const isScrolled = ref(false)
 const isMenuOpen = ref(false)
 const activeSection = ref('hero')
-
-const sectionIds = navItems.map((item) => item.id)
-
-function handleScroll() {
-  isScrolled.value = window.scrollY > 20
-
-  const scrollPos = window.scrollY + 100
-  for (let i = sectionIds.length - 1; i >= 0; i--) {
-    const el = document.getElementById(sectionIds[i])
-    if (el && el.offsetTop <= scrollPos) {
-      activeSection.value = sectionIds[i]
-      break
-    }
-  }
-}
-
-function toggleMenu() {
-  isMenuOpen.value = !isMenuOpen.value
-}
-
-function closeMenu() {
+const closeMenu = () => {
   isMenuOpen.value = false
 }
-
-function handleNavClick(id) {
-  activeSection.value = id
-  closeMenu()
+function handleScroll() {
+  if (
+    window.innerHeight + window.scrollY >=
+    document.documentElement.scrollHeight - 4
+  ) {
+    activeSection.value = 'contact'
+    return
+  }
+  activeSection.value =
+    [...navItems]
+      .reverse()
+      .find(
+        (item) =>
+          document.getElementById(item.id)?.getBoundingClientRect().top <= 132,
+      )?.id || 'hero'
 }
-
+function handleKey(event) {
+  if (event.key === 'Escape' && isMenuOpen.value) {
+    closeMenu()
+    document.querySelector('.menu-toggle')?.focus()
+  }
+}
+function handleResize() {
+  if (window.innerWidth > 1040) closeMenu()
+}
+let previousOverflow = ''
 watch(isMenuOpen, (open) => {
-  document.body.style.overflow = open ? 'hidden' : ''
+  if (open) {
+    previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+  } else document.body.style.overflow = previousOverflow
 })
-
 onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
+  window.addEventListener('keydown', handleKey)
+  window.addEventListener('resize', handleResize)
+  handleScroll()
 })
-
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll)
-  document.body.style.overflow = ''
+  window.removeEventListener('keydown', handleKey)
+  window.removeEventListener('resize', handleResize)
+  document.body.style.overflow = previousOverflow
 })
 </script>
-
 <style scoped>
 .nav {
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+  inset: 0 0 auto;
   z-index: 100;
-  height: var(--nav-height);
-  transition: background 0.3s, backdrop-filter 0.3s, border-color 0.3s;
-}
-
-.nav.scrolled {
-  background: rgba(10, 10, 15, 0.85);
-  backdrop-filter: blur(16px);
+  background: rgba(244, 247, 251, 0.97);
   border-bottom: 1px solid var(--border);
 }
-
 .nav-inner {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  height: 100%;
-  padding: 0 24px;
+  max-width: calc(var(--max-width) + 64px);
+  padding: 0 32px;
+  height: var(--nav-height);
+  margin: auto;
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 36px;
 }
-
 .nav-logo {
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 17px;
+  font-weight: 600;
   color: var(--text-primary);
   white-space: nowrap;
 }
-
+.nav-logo span {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-left: 16px;
+}
 .nav-links {
   display: flex;
-  gap: 4px;
-  flex: 1;
-  overflow-x: auto;
+  margin-left: auto;
+  gap: 24px;
 }
-
-.nav-link {
-  padding: 6px 14px;
-  font-size: 0.85rem;
-  font-weight: 500;
+.nav-links a {
+  font-size: 13px;
   color: var(--text-secondary);
-  border-radius: 8px;
   white-space: nowrap;
-  transition: color 0.2s, background 0.2s;
 }
-
-.nav-link:hover,
-.nav-link.active {
-  color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.06);
+.nav-links a[aria-current] {
+  color: var(--accent);
+  font-weight: 600;
 }
-
-.nav-actions {
+.nav-socials {
+  display: flex;
+  gap: 18px;
+}
+.nav-socials a {
   display: flex;
   align-items: center;
-  gap: 8px;
-}
-
-.nav-social-link {
-  display: inline-flex;
-  align-items: center;
   gap: 6px;
-  padding: 8px 16px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  border-radius: 8px;
-  border: 1px solid var(--border);
-  white-space: nowrap;
-  transition: color 0.2s, background 0.2s, border-color 0.2s, transform 0.2s;
-}
-
-.nav-social-link:hover {
-  transform: translateY(-1px);
-}
-
-.nav-social-link.github:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.25);
+  font-size: 12px;
 }
-
-.nav-social-link.juejin:hover {
-  color: #4da3ff;
-  background: rgba(30, 128, 255, 0.12);
-  border-color: rgba(30, 128, 255, 0.35);
-}
-
 .menu-toggle {
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  width: 40px;
-  height: 40px;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.2s;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  background: transparent;
+  border: 0;
+  color: var(--text-primary);
+  border-radius: 6px;
+  padding: 10px;
 }
-
 .menu-toggle:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--bg-secondary);
 }
-
-.menu-bar {
-  display: block;
-  width: 100%;
-  height: 2px;
-  background: var(--text-primary);
-  border-radius: 2px;
-  transition: transform 0.25s, opacity 0.25s;
-}
-
-.menu-toggle.open .menu-bar:nth-child(1) {
-  transform: translateY(7px) rotate(45deg);
-}
-
-.menu-toggle.open .menu-bar:nth-child(2) {
-  opacity: 0;
-}
-
-.menu-toggle.open .menu-bar:nth-child(3) {
-  transform: translateY(-7px) rotate(-45deg);
-}
-
 .mobile-menu {
   display: none;
 }
-
-@media (max-width: 768px) {
-  .nav-inner {
-    gap: 12px;
-  }
-
+@media (max-width: 1040px) {
   .nav-links,
-  .nav-actions {
+  .nav-socials {
     display: none;
   }
-
-  .menu-toggle {
-    display: flex;
-    margin-left: auto;
+  .nav-inner {
+    justify-content: space-between;
   }
-
+  .menu-toggle {
+    display: grid;
+  }
   .mobile-menu {
     display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    height: calc(100vh - var(--nav-height));
     height: calc(100dvh - var(--nav-height));
-    padding: 24px;
-    background: var(--bg-primary);
     overflow-y: auto;
-    overscroll-behavior: contain;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-8px);
-    transition: opacity 0.25s, visibility 0.25s, transform 0.25s;
+    padding: 20px 32px 40px;
+    background: var(--bg-primary);
   }
-
-  .mobile-menu.open {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .mobile-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .mobile-nav-link {
-    padding: 14px 16px;
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    border-radius: 10px;
-    transition: color 0.2s, background 0.2s;
-  }
-
-  .mobile-nav-link:hover,
-  .mobile-nav-link.active {
+  .mobile-menu > a {
+    padding: 14px 0;
     color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.06);
+    border-bottom: 1px solid var(--border);
   }
-
-  .mobile-actions {
+  .mobile-menu a[aria-current] {
+    color: var(--accent);
+  }
+  .mobile-socials {
     display: flex;
+    gap: 28px;
+    margin-top: 26px;
+  }
+}
+@media (max-width: 760px) {
+  .nav-inner {
+    padding: 0 22px;
     gap: 12px;
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
   }
-
-  .mobile-social-link {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    padding: 12px 16px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    transition: color 0.2s, background 0.2s, border-color 0.2s;
+  .nav-logo span {
+    margin-left: 12px;
   }
-
-  .mobile-social-link.github:hover {
-    color: var(--text-primary);
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.25);
-  }
-
-  .mobile-social-link.juejin:hover {
-    color: #4da3ff;
-    background: rgba(30, 128, 255, 0.12);
-    border-color: rgba(30, 128, 255, 0.35);
+  .mobile-menu {
+    padding: 20px 22px 40px;
   }
 }
 </style>

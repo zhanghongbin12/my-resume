@@ -1,119 +1,104 @@
 <template>
   <section id="contact">
-    <div class="section-inner contact-inner">
-      <span class="section-label">Contact</span>
-      <h2 class="section-title">联系我</h2>
-
-      <div class="contact-card card fade-in" ref="cardEl">
-        <p class="contact-text">
-          如果您对我的经历感兴趣，欢迎随时联系。期待与您进一步交流！
-        </p>
-
-        <div class="contact-methods">
-          <a :href="`mailto:${profile.email}`" class="contact-item">
-            <span class="contact-icon">✉</span>
-            <div>
-              <span class="contact-label">邮箱</span>
-              <span class="contact-value">{{ profile.email }}</span>
-            </div>
-          </a>
-          <a :href="`tel:${profile.phone}`" class="contact-item">
-            <span class="contact-icon">📱</span>
-            <div>
-              <span class="contact-label">电话</span>
-              <span class="contact-value">{{ profile.phone }}</span>
-            </div>
-          </a>
-        </div>
+    <div class="section-inner contact-panel">
+      <div>
+        <h2>聊聊下一份工作</h2>
+        <p>如果岗位与我的经历相符，欢迎联系。</p>
+      </div>
+      <div class="contact-methods">
+        <a :href="`mailto:${profile.email}`"
+          ><span>邮箱</span>{{ profile.email }}</a
+        ><a :href="`tel:${profile.phone}`"
+          ><span>电话</span>{{ profile.phone }}</a
+        >
       </div>
     </div>
   </section>
-
   <footer class="footer no-print">
-    <p>© {{ year }} {{ profile.name }}. Built with Vue 3 + Vite.</p>
+    <div class="section-inner footer-inner">
+      <p>© {{ year }} {{ profile.name }}</p>
+      <a href="#hero">回到顶部</a>
+    </div>
   </footer>
 </template>
-
 <script setup>
-import { ref, onMounted, computed } from 'vue'
 import { profile } from '../data/resume.js'
-import { useFadeIn } from '../composables/useFadeIn.js'
-
-const cardEl = ref(null)
-const year = computed(() => new Date().getFullYear())
-
-onMounted(() => {
-  useFadeIn([cardEl])
-})
+const year = new Date().getFullYear()
 </script>
-
 <style scoped>
-.contact-inner {
-  text-align: center;
+.contact-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 48px;
+  background: #e5edfa;
+  padding: 38px 42px;
+  border-radius: 16px;
 }
-
-.contact-card {
-  max-width: 640px;
-  margin: 0 auto;
+h2 {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
-
-.contact-text {
-  font-size: 1.05rem;
+.contact-panel p {
+  font-size: 14px;
   color: var(--text-secondary);
-  margin-bottom: 32px;
+  margin-top: 12px;
 }
-
 .contact-methods {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  text-align: left;
+  gap: 18px;
 }
-
-.contact-item {
+.contact-methods a {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: var(--radius);
-  transition: background 0.2s;
-  color: inherit;
+  align-items: baseline;
+  gap: 22px;
+  font-size: 17px;
+  overflow-wrap: anywhere;
 }
-
-a.contact-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: inherit;
+.contact-methods span {
+  font-size: 12px;
+  color: var(--text-secondary);
+  flex-shrink: 0;
 }
-
-.contact-icon {
-  font-size: 1.4rem;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(99, 102, 241, 0.12);
-  border-radius: 10px;
-}
-
-.contact-label {
-  display: block;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-bottom: 2px;
-}
-
-.contact-value {
-  font-size: 0.95rem;
-  font-weight: 500;
-}
-
 .footer {
-  text-align: center;
-  padding: 32px 24px 48px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
+  padding: 0 32px 32px;
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.footer a {
+  color: var(--text-secondary);
+}
+@media (max-width: 760px) {
+  .contact-panel {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding: 28px 24px;
+    border-radius: 12px;
+  }
+  h2 {
+    font-size: 23px;
+  }
+  .contact-methods a {
+    font-size: 15px;
+    gap: 16px;
+  }
+  .footer {
+    padding: 0 22px 24px;
+  }
+}
+@media print {
+  .contact-panel {
+    background: white;
+    padding: 0;
+  }
+  h2 {
+    font-size: 18pt;
+  }
 }
 </style>

@@ -1,171 +1,117 @@
 <template>
   <section id="experience">
     <div class="section-inner">
-      <span class="section-label">Experience</span>
-      <h2 class="section-title">工作经历</h2>
-
+      <div class="section-heading">
+        <h2 class="section-title">工作经历</h2>
+        <p class="section-note">2015 年开始从事前端开发</p>
+      </div>
       <div class="timeline">
-        <div
-          v-for="(exp, i) in experiences"
+        <article
+          v-for="exp in experiences"
           :key="exp.company + exp.period"
-          class="timeline-item fade-in"
-          :ref="(el) => setRef(el, i)"
+          class="experience-row"
         >
-          <div class="timeline-dot"></div>
-          <div class="card exp-card">
-            <div class="exp-header">
-              <div>
-                <h3 class="exp-company">{{ exp.company }}</h3>
-                <p class="exp-role">{{ exp.role }}</p>
-              </div>
-              <div class="exp-meta">
-                <span class="exp-period">{{ exp.period }}</span>
-                <span v-if="exp.location" class="exp-location">{{ exp.location }}</span>
-              </div>
-            </div>
-            <p class="exp-desc">{{ exp.description }}</p>
-            <ul class="exp-achievements">
-              <li v-for="(item, j) in exp.achievements" :key="j">{{ item }}</li>
-            </ul>
-            <div class="exp-tags">
-              <span v-for="tag in exp.tags" :key="tag" class="tag">{{ tag }}</span>
-            </div>
+          <div class="experience-meta">
+            <p>{{ exp.period }}</p>
+            <span>{{ exp.role }}</span>
           </div>
-        </div>
+          <div class="experience-body">
+            <h3>{{ exp.company }}</h3>
+            <p class="body-copy">{{ exp.description }}</p>
+            <ul class="achievements">
+              <li v-for="item in exp.achievements" :key="item">{{ item }}</li>
+            </ul>
+            <ul class="tech-list">
+              <li v-for="tag in exp.tags" :key="tag">{{ tag }}</li>
+            </ul>
+          </div>
+        </article>
       </div>
     </div>
   </section>
 </template>
-
 <script setup>
-import { ref, onMounted } from 'vue'
 import { experiences } from '../data/resume.js'
-import { useFadeIn } from '../composables/useFadeIn.js'
-
-const itemRefs = ref([])
-
-function setRef(el, index) {
-  if (el) itemRefs.value[index] = el
-}
-
-onMounted(() => {
-  useFadeIn(itemRefs)
-})
 </script>
-
 <style scoped>
 .timeline {
-  position: relative;
-  padding-left: 32px;
+  background: #fff;
+  border-radius: 14px;
+  padding: 10px 36px;
+  border: 1px solid var(--border);
 }
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 7px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
+.experience-row {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 42px;
+  padding: 30px 0;
 }
-
-.timeline-item {
-  position: relative;
-  margin-bottom: 32px;
+.experience-row + .experience-row {
+  border-top: 1px solid var(--border);
 }
-
-.timeline-item:last-child {
-  margin-bottom: 0;
+.experience-meta p {
+  font-size: 13px;
+  color: var(--text-secondary);
 }
-
-.timeline-dot {
-  position: absolute;
-  left: -32px;
-  top: 28px;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--accent);
-  border: 3px solid var(--bg-primary);
-  box-shadow: 0 0 12px var(--accent-glow);
-}
-
-.exp-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.exp-company {
-  font-size: 1.15rem;
-  font-weight: 700;
-}
-
-.exp-role {
-  font-size: 0.9rem;
-  color: var(--accent-light);
-  margin-top: 4px;
-}
-
-.exp-meta {
-  text-align: right;
-  flex-shrink: 0;
-}
-
-.exp-period {
+.experience-meta span {
   display: block;
-  font-size: 0.85rem;
+  margin-top: 8px;
+  color: var(--accent);
+  font-size: 13px;
+}
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.body-copy {
+  font-size: 14px;
+}
+.achievements {
+  padding-left: 18px;
   color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 14px;
+  margin: 12px 0 16px;
 }
-
-.exp-location {
-  font-size: 0.8rem;
-  color: var(--text-muted);
+.achievements li {
+  padding-left: 3px;
+  margin-bottom: 6px;
 }
-
-.exp-desc {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 16px;
+.achievements li::marker {
+  color: #a2b4cf;
 }
-
-.exp-achievements {
-  list-style: none;
-  margin-bottom: 16px;
-}
-
-.exp-achievements li {
-  position: relative;
-  padding-left: 20px;
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-  line-height: 1.6;
-}
-
-.exp-achievements li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--accent-light);
-}
-
-.exp-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-@media (max-width: 768px) {
-  .exp-header {
-    flex-direction: column;
+@media (max-width: 760px) {
+  .timeline {
+    padding: 0 22px;
+    border-radius: 12px;
   }
-
-  .exp-meta {
-    text-align: left;
+  .experience-row {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px 0;
+  }
+  .experience-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    align-items: baseline;
+  }
+  .experience-meta span {
+    margin: 0;
+  }
+  h3 {
+    font-size: 17px;
+  }
+}
+@media print {
+  .timeline {
+    padding: 0;
+    border: 0;
+  }
+  .experience-row {
+    grid-template-columns: 150px 1fr;
+    gap: 20px;
+    padding: 16px 0;
   }
 }
 </style>

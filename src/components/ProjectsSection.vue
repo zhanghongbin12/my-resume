@@ -1,158 +1,232 @@
 <template>
   <section id="projects">
     <div class="section-inner">
-      <span class="section-label">Projects</span>
-      <h2 class="section-title">精选项目</h2>
-
-      <div class="projects-grid">
-        <div
-          v-for="(project, i) in projects"
+      <div class="section-heading">
+        <h2 class="section-title">项目经历</h2>
+        <p class="section-note">从编辑器扩展到复杂数据页面</p>
+      </div>
+      <div class="project-list">
+        <article
+          v-for="(project, index) in projects"
+          :id="project.id"
           :key="project.name"
-          class="card project-card fade-in"
-          :ref="(el) => setRef(el, i)"
+          class="project"
+          :class="{ 'project-featured': index === 0 }"
         >
-          <div class="project-header">
-            <div>
-              <h3 class="project-name">{{ project.name }}</h3>
-              <span v-if="project.period" class="project-period">{{ project.period }}</span>
+          <div class="project-main">
+            <div class="project-heading">
+              <h3>{{ project.name }}</h3>
+              <span class="project-period">{{ project.period }}</span>
             </div>
-            <span v-if="project.highlight" class="project-badge">{{ project.highlight }}</span>
-          </div>
-          <p class="project-desc">{{ project.description }}</p>
-          <div v-if="project.responsibilities?.length" class="project-section">
-            <h4>核心职责</h4>
-            <ul class="project-list">
-              <li v-for="(item, j) in project.responsibilities" :key="j">{{ item }}</li>
+            <p class="body-copy project-description">
+              {{ project.description }}
+            </p>
+            <h4>我的工作</h4>
+            <ul class="responsibilities">
+              <li
+                v-for="item in project.responsibilities.slice(0, 3)"
+                :key="item"
+              >
+                {{ item }}
+              </li>
             </ul>
+            <details>
+              <summary>完整职责与项目成果</summary>
+              <div class="details-body">
+                <ul class="responsibilities">
+                  <li
+                    v-for="item in project.responsibilities.slice(3)"
+                    :key="item"
+                  >
+                    {{ item }}
+                  </li>
+                </ul>
+                <p class="body-copy">{{ project.result }}</p>
+              </div>
+            </details>
+            <a
+              v-if="project.link"
+              :href="project.link"
+              class="text-link no-print"
+              target="_blank"
+              rel="noopener noreferrer"
+              >查看项目</a
+            >
           </div>
-          <div v-if="project.result" class="project-section project-result">
-            <h4>项目成果</h4>
-            <p>{{ project.result }}</p>
-          </div>
-          <div class="project-tech">
-            <span v-for="t in project.tech" :key="t" class="tag">{{ t }}</span>
-          </div>
-          <a
-            v-if="project.link"
-            :href="project.link"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="project-link no-print"
-          >
-            查看项目 →
-          </a>
-        </div>
+          <aside class="project-aside">
+            <p class="project-category">{{ project.highlight }}</p>
+            <h4>参与重点</h4>
+            <ul class="focus-list">
+              <li v-for="focus in project.focus" :key="focus">{{ focus }}</li>
+            </ul>
+            <h4 class="tech-heading">使用技术</h4>
+            <ul class="tech-list">
+              <li v-for="tech in project.tech" :key="tech">{{ tech }}</li>
+            </ul>
+          </aside>
+        </article>
       </div>
     </div>
   </section>
 </template>
-
 <script setup>
-import { ref, onMounted } from 'vue'
 import { projects } from '../data/resume.js'
-import { useFadeIn } from '../composables/useFadeIn.js'
-
-const cardRefs = ref([])
-
-function setRef(el, index) {
-  if (el) cardRefs.value[index] = el
-}
-
-onMounted(() => {
-  useFadeIn(cardRefs)
-})
 </script>
-
 <style scoped>
-.projects-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-
-.project-header {
+.project-list {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
+  flex-direction: column;
+  gap: 28px;
+}
+.project {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 235px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  overflow: hidden;
+}
+.project-main {
+  padding: 34px 38px;
+}
+.project-heading {
+  margin-bottom: 18px;
+}
+h3 {
+  font-size: 23px;
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+}
+.project-period {
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: block;
+  margin-top: 8px;
+}
+.project-description {
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+.responsibilities {
+  padding-left: 18px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.9;
+}
+.responsibilities li {
+  padding-left: 3px;
+  margin-bottom: 9px;
+}
+.responsibilities li::marker {
+  color: #a2b4cf;
+}
+details {
+  margin-top: 22px;
+}
+summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 13px;
+  width: fit-content;
+  padding: 6px 0;
+}
+.details-body {
+  margin-top: 14px;
+}
+.details-body .body-copy {
+  font-size: 14px;
+  margin-top: 18px;
+}
+.project-aside {
+  background: #edf2fa;
+  padding: 36px 26px;
+}
+.project-featured .project-aside {
+  background: #e8f0fd;
+}
+.project-category {
+  font-size: 12px;
+  color: var(--accent);
+  margin-bottom: 32px;
+}
+.focus-list {
+  list-style: none;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+.focus-list li {
   margin-bottom: 12px;
 }
-
-.project-name {
-  font-size: 1.1rem;
-  font-weight: 700;
+.tech-heading {
+  margin-top: 34px;
 }
-
-.project-period {
-  display: inline-block;
-  margin-top: 4px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
+.project-aside .tech-list {
+  gap: 7px 13px;
 }
-
-.project-badge {
-  font-size: 0.7rem;
-  font-weight: 600;
-  padding: 4px 10px;
-  border-radius: 999px;
-  background: rgba(74, 222, 128, 0.12);
-  color: #4ade80;
-  border: 1px solid rgba(74, 222, 128, 0.25);
-  white-space: nowrap;
+@media (max-width: 760px) {
+  .project {
+    grid-template-columns: 1fr;
+    border-radius: 12px;
+  }
+  .project-main {
+    padding: 25px 22px;
+  }
+  h3 {
+    font-size: 20px;
+  }
+  .project-aside {
+    padding: 22px;
+  }
+  .project-category {
+    margin-bottom: 16px;
+  }
+  .focus-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+  }
+  .focus-list li {
+    margin: 0;
+  }
+  .tech-heading {
+    margin-top: 22px;
+  }
 }
-
-.project-desc {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  margin-bottom: 16px;
-}
-
-.project-section {
-  margin-bottom: 16px;
-}
-
-.project-section h4 {
-  margin-bottom: 8px;
-  font-size: 0.85rem;
-  color: var(--accent-light);
-}
-
-.project-list {
-  list-style: none;
-}
-
-.project-list li {
-  position: relative;
-  padding-left: 18px;
-  margin-bottom: 6px;
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  line-height: 1.65;
-}
-
-.project-list li::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--accent-light);
-}
-
-.project-result p {
-  color: var(--text-secondary);
-  font-size: 0.875rem;
-  line-height: 1.65;
-}
-
-.project-tech {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.project-link {
-  font-size: 0.85rem;
-  font-weight: 600;
+@media print {
+  .project {
+    display: block;
+    border: 0;
+    border-radius: 0;
+  }
+  .project-main {
+    padding: 16px 0;
+  }
+  .project-aside {
+    padding: 12px 0;
+    background: white !important;
+  }
+  .focus-list {
+    display: flex;
+    gap: 20px;
+  }
+  .project-category,
+  .project-aside h4 {
+    display: none;
+  }
+  .focus-list li {
+    margin-bottom: 6px;
+  }
+  summary {
+    display: none;
+  }
+  .project-list {
+    gap: 12px;
+  }
 }
 </style>

@@ -1,59 +1,51 @@
 <template>
   <section id="about">
-    <div class="section-inner">
-      <span class="section-label">About</span>
-      <h2 class="section-title">关于我</h2>
-
-      <div class="about-content card fade-in" ref="contentEl">
-        <blockquote class="about-quote">「{{ profile.quote }}」</blockquote>
-        <div class="about-body">
-          <p v-for="(paragraph, i) in profile.aboutParagraphs" :key="i">
-            {{ paragraph }}
-          </p>
-        </div>
+    <div class="section-inner about-layout">
+      <div>
+        <h2 class="section-title">关于我</h2>
+        <p class="about-lead">{{ profile.quote }}</p>
+      </div>
+      <div class="about-body">
+        <p
+          v-for="paragraph in profile.aboutParagraphs"
+          :key="paragraph"
+          class="body-copy"
+        >
+          {{ paragraph }}
+        </p>
       </div>
     </div>
   </section>
 </template>
-
 <script setup>
-import { ref, onMounted } from 'vue'
 import { profile } from '../data/resume.js'
-import { useFadeIn } from '../composables/useFadeIn.js'
-
-const contentEl = ref(null)
-
-onMounted(() => {
-  useFadeIn([contentEl])
-})
 </script>
-
 <style scoped>
-.about-content {
-  width: 100%;
+.about-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 80px;
 }
-
-.about-quote {
-  font-size: clamp(1.25rem, 3vw, 1.6rem);
-  font-weight: 600;
-  line-height: 1.5;
-  margin-bottom: 32px;
-  padding: 0;
-  border: none;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.about-lead {
+  font-size: 17px;
+  margin-top: 24px;
+  line-height: 1.9;
+  max-width: 220px;
 }
-
 .about-body p {
-  font-size: 1.05rem;
-  color: var(--text-secondary);
-  line-height: 1.85;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
-
 .about-body p:last-child {
   margin-bottom: 0;
+}
+@media (max-width: 760px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .about-lead {
+    max-width: none;
+    margin-top: 16px;
+  }
 }
 </style>

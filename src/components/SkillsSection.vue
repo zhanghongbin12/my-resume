@@ -1,83 +1,92 @@
 <template>
   <section id="skills">
     <div class="section-inner">
-      <span class="section-label">Skills</span>
-      <h2 class="section-title">专业技能</h2>
-
-      <div class="skills-grid">
-        <div
-          v-for="(group, gi) in skills"
-          :key="group.category"
-          class="card skill-group fade-in"
-          :ref="(el) => setRef(el, gi)"
-        >
-          <h3 class="group-title">{{ group.category }}</h3>
-          <div v-for="item in group.items" :key="item.name" class="skill-item">
-            <span class="skill-name">{{ item.name }}</span>
-            <span v-if="item.detail" class="skill-detail">{{ item.detail }}</span>
-          </div>
+      <div class="section-heading">
+        <h2 class="section-title">技术与工具</h2>
+        <p class="section-note">结合实际项目使用</p>
+      </div>
+      <div class="skill-groups">
+        <div v-for="group in skills" :key="group.category" class="skill-group">
+          <h3>{{ group.category }}</h3>
+          <dl>
+            <div v-for="item in group.items" :key="item.name">
+              <dt>{{ item.name }}</dt>
+              <dd>{{ item.detail }}</dd>
+            </div>
+          </dl>
         </div>
       </div>
     </div>
   </section>
 </template>
-
 <script setup>
-import { ref, onMounted } from 'vue'
 import { skills } from '../data/resume.js'
-import { useFadeIn } from '../composables/useFadeIn.js'
-
-const cardRefs = ref([])
-
-function setRef(el, index) {
-  if (el) cardRefs.value[index] = el
-}
-
-onMounted(() => {
-  useFadeIn(cardRefs)
-})
 </script>
-
 <style scoped>
-.skills-grid {
+.skill-groups {
+  background: #fff;
+  padding: 12px 34px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+.skill-group {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 190px minmax(0, 1fr);
+  gap: 40px;
+  padding: 24px 0;
+}
+.skill-group + .skill-group {
+  border-top: 1px solid var(--border);
+}
+h3 {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+}
+dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 24px;
 }
-
-.group-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin-bottom: 24px;
-  color: var(--accent-light);
+dt {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.8;
 }
-
-.skill-item {
-  margin-bottom: 20px;
+dd {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 7px;
+  line-height: 1.9;
 }
-
-.skill-item:last-child {
-  margin-bottom: 0;
+@media (max-width: 960px) {
+  .skill-group {
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 24px;
+  }
 }
-
-.skill-name {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.skill-detail {
-  display: block;
-  margin-top: 6px;
-  font-size: 0.8rem;
-  line-height: 1.55;
-  color: var(--text-muted);
-}
-
-@media (max-width: 900px) {
-  .skills-grid {
+@media (max-width: 760px) {
+  .skill-groups {
+    padding: 0 22px;
+    border-radius: 12px;
+  }
+  .skill-group {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  dl {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+@media print {
+  .skill-groups {
+    border: 0;
+    padding: 0;
+  }
+  .skill-group {
+    grid-template-columns: 130px 1fr;
+    gap: 20px;
   }
 }
 </style>
